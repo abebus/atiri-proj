@@ -58,4 +58,4 @@ def wiki_parser(url: str, base_path: str):
 
 if __name__ == "__main__":
     wiki_parser('https://www.crummy.com/software/BeautifulSoup/bs4/doc.ru/bs4ru.html',
-                r'D:\For_Python\Informatics_two_term_Kharin_Ildar\src')
+                )
