@@ -12,7 +12,7 @@ class Site:
 
 
 def parser():
-	sites = [site.strip() for site in open('sites.txt')]
+	sites = [site.strip() for site in open('../sites.txt')]
 	for site in sites:
 		soup = bs.BeautifulSoup(req.get(url=site).text, 'lxml')
 		title = soup.find_all('title')[0].get_text().strip()
@@ -21,9 +21,10 @@ def parser():
 		for val in search_list:
 			for meta in soup.find_all('meta', attrs={'name': val}):
 				text.append(meta['content'].strip())
+
 		a = Site(url=site, title=title, texts=text)
 		print(a)
-	
-	
+
+
 def analyser():
 	pass
