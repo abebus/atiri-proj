@@ -1,0 +1,1165 @@
+
+
+python - How do I sort a dictionary by value? - Stack Overflow
+Stack Overflow
+About
+Products
+For Teams
+Stack Overflow
+Public questions & answers
+Stack Overflow for Teams
+Where developers & technologists share private knowledge with coworkers
+Talent
+Build your employer brand
+Advertising
+Reach developers & technologists worldwide
+About the company
+Loading…
+current community
+Stack Overflow
+help
+chat
+Meta Stack Overflow
+your communities
+Sign up or log in to customize your list.
+more stack exchange communities
+company blog
+Log in
+Sign up
+Home
+Public
+Questions
+Tags
+Users
+Companies
+Collectives
+Explore Collectives
+Teams
+Stack Overflow for Teams
+– Start collaborating and sharing organizational knowledge.
+Create a free Team
+Why Teams?
+Teams
+Create free Team
+Collectives™ on Stack Overflow
+Find centralized, trusted content and collaborate around the technologies you use most.
+Learn more
+Teams
+Q&A for work
+Connect and share knowledge within a single location that is structured and easy to search.
+Learn more
+How do I sort a dictionary by value?
+Ask Question
+Asked
+13 years, 2 months ago
+Modified
+7 months ago
+Viewed
+4.4m times
+3416
+1468
+This question's answers are a community effort. Edit existing answers to improve this post. It is not currently accepting new answers or interactions.
+I have a dictionary of values read from two fields in a database: a string field and a numeric field. The string field is unique, so that is the key of the dictionary.
+I can sort on the keys, but how can I sort based on the values?
+Note: I have read Stack Overflow question here How do I sort a list of dictionaries by a value of the dictionary? and probably could change my code to have a list of dictionaries, but since I do not really need a list of dictionaries I wanted to know if there is a simpler solution to sort either in ascending or descending order.
+python sorting dictionary
+Share
+Follow
+edited Mar 20, 2019 at 22:50
+Anvesh
+6311 silver badge99 bronze badges
+asked Mar 5, 2009 at 0:49
+Gern BlanstonGern Blanston
+42.1k1919 gold badges4848 silver badges6464 bronze badges
+5
+9
+The dictionary data structure does not have inherent order. You can iterate through it but there's nothing to guarantee that the iteration will follow any particular order. This is by design, so your best bet is probaly using anohter data structure for representation.
+– Daishiman
+Jul 5, 2010 at 2:08
+135
+"sorted()" can operate on dictionaries (and returns a list of sorted keys), so I think he's aware of this. Without knowing his program, it's absurd to tell someone they're using the wrong data structure. If fast lookups are what you need 90% of the time, then a dict is probably what you want.
+– bobpaul
+Feb 15, 2013 at 19:04
+All three outputs (keys, values, both) for sorting dictionaries are covered here in a clear and concise style: stackoverflow.com/questions/16772071/sort-dict-by-value-python
+– JStrahl
+Mar 7, 2016 at 10:14
+2
+@Daishiman The base class might not be ordered but OrderedDict is of course.
+– Taylor D. Edmiston
+Sep 9, 2017 at 1:10
+1
+In Python 3.6+ dictionaries preserve insertion order. This is, of course, not the same as possibility of sorting them by value, but on the other hand it is no longer valid to say that "dictionary data structure does not have inherent order".
+– Konrad Kocik
+Dec 31, 2018 at 13:30
+Comments disabled on deleted / locked posts / reviews
+|
+34 Answers
+34
+Sorted by:
+Reset to default
+Highest score (default)
+Date modified (newest first)
+Date created (oldest first)
+1
+2
+Next
+6354
++500
+Python 3.7+ or CPython 3.6
+Dicts preserve insertion order in Python 3.7+. Same in CPython 3.6, but it's an implementation detail.
+>>> x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+>>> {k: v for k, v in sorted(x.items(), key=lambda item: item[1])}
+{0: 0, 2: 1, 1: 2, 4: 3, 3: 4}
+or
+>>> dict(sorted(x.items(), key=lambda item: item[1]))
+{0: 0, 2: 1, 1: 2, 4: 3, 3: 4}
+Older Python
+It is not possible to sort a dictionary, only to get a representation of a dictionary that is sorted. Dictionaries are inherently orderless, but other types, such as lists and tuples, are not. So you need an ordered data type to represent sorted values, which will be a list—probably a list of tuples.
+For instance,
+import operator
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=operator.itemgetter(1))
+sorted_x will be a list of tuples sorted by the second element in each tuple. dict(sorted_x) == x.
+And for those wishing to sort on keys instead of values:
+import operator
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=operator.itemgetter(0))
+In Python3 since unpacking is not allowed we can use
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=lambda kv: kv[1])
+If you want the output as a dict, you can use collections.OrderedDict:
+import collections
+sorted_dict = collections.OrderedDict(sorted_x)
+Share
+Improve this answer
+Follow
+edited Nov 22, 2020 at 19:29
+wjandrea
+22.7k77 gold badges4949 silver badges6767 bronze badges
+answered Mar 5, 2009 at 0:59
+Devin JeanpierreDevin Jeanpierre
+87.6k44 gold badges5454 silver badges7979 bronze badges
+10
+48
+for timings on various dictionary sorting by value schemes:
+writeonly.wordpress.com/2008/08/30/…
+– Gregg Lind
+Mar 14, 2009 at 17:55
+191
+sorted_x.reverse() will give you a descending ordering (by the second tuple element)
+– saidimu apale
+May 3, 2010 at 5:24
+480
+saidimu: Since we're already using sorted(), it's much more efficient to pass in the reverse=True argument.
+– rmh
+Jul 5, 2010 at 2:59
+127
+In python3 I used a lambda: sorted(d.items(), key=lambda x: x[1]). Will this work in python 2.x?
+– Keyo
+Feb 15, 2011 at 15:05
+4
+Where can I read more about the usage of key=lambda item :item[1] please? The part I don't quite understand is the item[1], is it because when we do x.items() it returns the key-value pairs and with this we can tap into the value by doing item[1]?
+– UdonN00dle
+Nov 6, 2021 at 23:56
+|
+Show 5 more comments
+1519
+As simple as: sorted(dict1, key=dict1.get)
+Well, it is actually possible to do a "sort by dictionary values". Recently I had to do that in a Code Golf (Stack Overflow question Code golf: Word frequency chart). Abridged, the problem was of the kind: given a text, count how often each word is encountered and display a list of the top words, sorted by decreasing frequency.
+If you construct a dictionary with the words as keys and the number of occurrences of each word as value, simplified here as:
+from collections import defaultdict
+d = defaultdict(int)
+for w in text.split():
+d[w] += 1
+then you can get a list of the words, ordered by frequency of use with sorted(d, key=d.get) - the sort iterates over the dictionary keys, using the number of word occurrences as a sort key .
+for w in sorted(d, key=d.get, reverse=True):
+print(w, d[w])
+I am writing this detailed explanation to illustrate what people often mean by "I can easily sort a dictionary by key, but how do I sort by value" - and I think the original post was trying to address such an issue. And the solution is to do sort of list of the keys, based on the values, as shown above.
+Share
+Improve this answer
+Follow
+edited Mar 10, 2020 at 14:42
+Boris V
+10.4k77 gold badges7777 silver badges7979 bronze badges
+answered Jul 5, 2010 at 8:01
+Nas BanovNas Banov
+27.1k66 gold badges4545 silver badges6767 bronze badges
+3
+37
+This is also good but key=operator.itemgetter(1) should be more scalable for efficiency than key=d.get
+– smci
+Dec 9, 2011 at 21:18
+12
+@bli sorted_keys = sorted(d.items(), key=itemgetter(1), reverse=True) and for key, val in sorted_keys: print "%s: %d" % (key, val) - itemgetter creates a function when it's called, you don't use it directly like in your example.
+And a plain iteration on a dict uses the keys without the values
+– Izkata
+Aug 19, 2014 at 20:21
+26
+i have come from the future to tell you of collections.Counter, which has a most_common method that might interest you
+:)
+– Eevee
+Jun 25, 2017 at 20:47
+Add a comment
+|
+1072
+You could use:
+sorted(d.items(), key=lambda x: x[1])
+This will sort the dictionary by the values of each entry within the dictionary from smallest to largest.
+To sort it in descending order just add reverse=True:
+sorted(d.items(), key=lambda x: x[1], reverse=True)
+Input:
+d = {'one':1,'three':3,'five':5,'two':2,'four':4}
+a = sorted(d.items(), key=lambda x: x[1])
+print(a)
+Output:
+[('one', 1), ('two', 2), ('three', 3), ('four', 4), ('five', 5)]
+Share
+Improve this answer
+Follow
+edited Jan 10, 2020 at 9:43
+Suresh2692
+3,55333 gold badges1515 silver badges2525 bronze badges
+answered Feb 13, 2010 at 16:33
+MarkMark
+10.8k11 gold badge1414 silver badges55 bronze badges
+6
+From what I've seen (docs.python.org/2/library/…), there is a class called OrderedDict which can be sorted and retain order whilst still being a dictionary. From the code examples, you can use lambda to sort it, but I haven't tried it out personally :P
+– UsAndRufus
+Feb 20, 2013 at 10:38
+69
+I'd prefer key=lambda (k, v): v personally
+– Claudiu
+Apr 9, 2015 at 23:08
+@Keyo shouldn't that be it returns an ordered list of keys (sorted by values) not (k,v) tuples? That's what I get with Python 2.7.10.
+@Nyxynyx add the parameter reverse=True to sort in descending order.
+– dhj
+Nov 16, 2015 at 16:49
+47
+@Claudiu I like that (k, v) syntax too, but it's not available in Python 3 where tuple parameter unpacking was removed.
+– Bob Stein
+Feb 5, 2016 at 17:53
+1
+If you wrap this in an OrderedDict() instance you will get a (ordered) dict instead of list of tuples!
+– tsveti_iko
+Mar 21, 2019 at 10:30
+|
+Show 1 more comment
+260
+Dicts can't be sorted, but you can build a sorted list from them.
+A sorted list of dict values:
+sorted(d.values())
+A list of (key, value) pairs, sorted by value:
+from operator import itemgetter
+sorted(d.items(), key=itemgetter(1))
+Share
+Improve this answer
+Follow
+edited Sep 16, 2014 at 17:26
+answered Mar 5, 2009 at 1:05
+Roberto BonvalletRoberto Bonvallet
+29.5k55 gold badges3838 silver badges5757 bronze badges
+3
+What order are keys with the same value placed in? I sorted the list by keys first, then by values, but the order of the keys with the same value does not remain.
+– SabreWolfy
+Jun 18, 2012 at 10:04
+7
+Dicts can now be sorted, starting with CPython 3.6 and all other Python implementations starting with 3.7
+– Boris V
+Apr 24, 2020 at 19:38
+True at the time, but now python dictionaries preserve the order in which items were inserted already by default. And therefore they can be sorted.
+– c8999c 3f964f64
+Mar 11 at 8:21
+Add a comment
+|
+180
+In recent Python 2.7, we have the new OrderedDict type, which remembers the order in which the items were added.
+>>> d = {"third": 3, "first": 1, "fourth": 4, "second": 2}
+>>> for k, v in d.items():
+...
+print "%s: %s" % (k, v)
+...
+second: 2
+fourth: 4
+third: 3
+first: 1
+>>> d
+{'second': 2, 'fourth': 4, 'third': 3, 'first': 1}
+To make a new ordered dictionary from the original, sorting by the values:
+>>> from collections import OrderedDict
+>>> d_sorted_by_value = OrderedDict(sorted(d.items(), key=lambda x: x[1]))
+The OrderedDict behaves like a normal dict:
+>>> for k, v in d_sorted_by_value.items():
+...
+print "%s: %s" % (k, v)
+...
+first: 1
+second: 2
+third: 3
+fourth: 4
+>>> d_sorted_by_value
+OrderedDict([('first': 1), ('second': 2), ('third': 3), ('fourth': 4)])
+Share
+Improve this answer
+Follow
+edited Apr 3, 2014 at 16:59
+Peter Mortensen
+30k2121 gold badges9999 silver badges124124 bronze badges
+answered Jul 5, 2010 at 2:50
+mykhalmykhal
+18.2k1111 gold badges7171 silver badges7878 bronze badges
+7
+6
+This is not what the question is about - it is not about maintaining order of keys but about "sorting by value"
+– Nas Banov
+Jul 5, 2010 at 7:07
+10
+@Nas Banov: it is NOT sorting by the key. it is sorting in the order, we create the items. in our case, we sort by the value. unfortunately, the 3-item dict was unfortunately chosen so the order was the same, when sorted voth by value and key, so i expanded the sample dict.
+– mykhal
+Jul 5, 2010 at 10:56
+sorted(d.items(), key=lambda x: x[1]) Can you explain what the x means, why it can take x[1] to lambda? Why does it can't be x[0]? Thank you very much!
+– JZAU
+Nov 8, 2013 at 5:12
+1
+@Boern d.items() returns a list-like container of (key, value) tuples. [0] accesses the first element of the tuple -- the key -- and [1] accesses the second element -- the value.
+– BallpointBen
+Apr 10, 2018 at 14:29
+2
+Note: As of 3.6 (as a CPython/PyPy implementation detail) and as of 3.7 (as a Python language guarantee), plain dict is insertion ordered as well, so you can just replace OrderedDict with dict for code running on modern Python. OrderedDict isn't really needed anymore unless you need to rearrange the order of an existing dict (with move_to_end/popitem) or need equality comparisons to be order-sensitive. It uses a lot more memory than plain dict, so if you can, dict is the way to go.
+– ShadowRanger
+Sep 4, 2019 at 13:09
+|
+Show 2 more comments
+119
+UPDATE: 5 DECEMBER 2015 using Python 3.5
+Whilst I found the accepted answer useful, I was also surprised that it hasn't been updated to reference OrderedDict from the standard library collections module as a viable, modern alternative - designed to solve exactly this type of problem.
+from operator import itemgetter
+from collections import OrderedDict
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = OrderedDict(sorted(x.items(), key=itemgetter(1)))
+# OrderedDict([(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)])
+The official OrderedDict documentation offers a very similar example too, but using a lambda for the sort function:
+# regular unsorted dictionary
+d = {'banana': 3, 'apple':4, 'pear': 1, 'orange': 2}
+# dictionary sorted by value
+OrderedDict(sorted(d.items(), key=lambda t: t[1]))
+# OrderedDict([('pear', 1), ('orange', 2), ('banana', 3), ('apple', 4)])
+Share
+Improve this answer
+Follow
+edited Dec 15, 2015 at 5:54
+answered Dec 5, 2015 at 9:46
+arcseldonarcseldon
+32.7k1515 gold badges114114 silver badges119119 bronze badges
+1
+can you explain what itemgetter does in this example? otherwise this seems just as cryptic as using a lamba
+– c8999c 3f964f64
+Mar 11 at 8:29
+Add a comment
+|
+109
+Pretty much the same as Hank Gay's answer:
+sorted([(value,key) for (key,value) in mydict.items()])
+Or optimized slightly as suggested by John Fouhy:
+sorted((value,key) for (key,value) in mydict.items())
+Share
+Improve this answer
+Follow
+edited Mar 12, 2019 at 5:18
+Justin Batch
+1755 bronze badges
+answered Mar 5, 2009 at 1:06
+user26294user26294
+5,13533 gold badges2121 silver badges1818 bronze badges
+3
+10
+..and as with Hank Gay's answer, you don't need the square brackets.
+sorted() will happily take any iterable, such as a generator expression.
+– John Fouhy
+Mar 5, 2009 at 1:45
+You may still need to swap the (value,key) tuple elements to end up with the (key, value). Another list comprehension is then needed.
+[(key, value) for (value, key) in sorted_list_of_tuples]
+– saidimu apale
+May 3, 2010 at 5:22
+2
+no, it's better to leave square brackets, because sorted will have to rebuild the list anyway, and rebuilding from gencomp will be faster. Good for codegolfing, bad for speed. Keep the ugly ([]) version.
+– Jean-François Fabre
+♦
+Dec 7, 2017 at 21:21
+Add a comment
+|
+85
+As of Python 3.6 the built-in dict will be ordered
+Good news, so the OP's original use case of mapping pairs retrieved from a database with unique string ids as keys and numeric values as values into a built-in Python v3.6+ dict, should now respect the insert order.
+If say the resulting two column table expressions from a database query like:
+SELECT a_key, a_value FROM a_table ORDER BY a_value;
+would be stored in two Python tuples, k_seq and v_seq (aligned by numerical index and with the same length of course), then:
+k_seq = ('foo', 'bar', 'baz')
+v_seq = (0, 1, 42)
+ordered_map = dict(zip(k_seq, v_seq))
+Allow to output later as:
+for k, v in ordered_map.items():
+print(k, v)
+yielding in this case (for the new Python 3.6+ built-in dict!):
+foo 0
+bar 1
+baz 42
+in the same ordering per value of v.
+Where in the Python 3.5 install on my machine it currently yields:
+bar 1
+foo 0
+baz 42
+Details:
+As proposed in 2012 by Raymond Hettinger (cf. mail on python-dev with subject "More compact dictionaries with faster iteration") and now (in 2016) announced in a mail by Victor Stinner to python-dev with subject "Python 3.6 dict becomes compact and gets a private version; and keywords become ordered" due to the fix/implementation of issue 27350 "Compact and ordered dict" in Python 3.6 we will now be able, to use a built-in dict to maintain insert order!!
+Hopefully this will lead to a thin layer OrderedDict implementation as a first step. As @JimFasarakis-Hilliard indicated, some see use cases for the OrderedDict type also in the future. I think the Python community at large will carefully inspect, if this will stand the test of time, and what the next steps will be.
+Time to rethink our coding habits to not miss the possibilities opened by stable ordering of:
+Keyword arguments and
+(intermediate) dict storage
+The first because it eases dispatch in the implementation of functions and methods in some cases.
+The second as it encourages to more easily use dicts as intermediate storage in processing pipelines.
+Raymond Hettinger kindly provided documentation explaining "The Tech Behind Python 3.6 Dictionaries" - from his San Francisco Python Meetup Group presentation 2016-DEC-08.
+And maybe quite some Stack Overflow high decorated question and answer pages will receive variants of this information and many high quality answers will require a per version update too.
+Caveat Emptor (but also see below update 2017-12-15):
+As @ajcr rightfully notes: "The order-preserving aspect of this new implementation is considered an implementation detail and should not be relied upon." (from the whatsnew36) not nit picking, but the citation was cut a bit pessimistic ;-). It continues as " (this may change in the future, but it is desired to have this new dict implementation in the language for a few releases before changing the language spec to mandate order-preserving semantics for all current and future Python implementations; this also helps preserve backwards-compatibility with older versions of the language where random iteration order is still in effect, e.g. Python 3.5)."
+So as in some human languages (e.g. German), usage shapes the language, and the will now has been declared ... in whatsnew36.
+Update 2017-12-15:
+In a mail to the python-dev list, Guido van Rossum declared:
+Make it so. "Dict keeps insertion order" is the ruling. Thanks!
+So, the version 3.6 CPython side-effect of dict insertion ordering is now becoming part of the language spec (and not anymore only an implementation detail). That mail thread also surfaced some distinguishing design goals for collections.OrderedDict as reminded by Raymond Hettinger during discussion.
+Share
+Improve this answer
+Follow
+edited Dec 16, 2017 at 15:47
+answered Sep 10, 2016 at 10:05
+DilettantDilettant
+3,15033 gold badges2727 silver badges2828 bronze badges
+6
+16
+The warning on the 'whatsnew' page you've linked to should be emphasised: the order-preserving aspect of this new implementation is considered an implementation detail and should not be relied upon. Nobody should be assuming that the dict type will respect insertion order in their code. This is not part of the language's definition and the implementation could change in any future release. Continue using OrderedDict to guarantee order.
+– Alex Riley
+Sep 10, 2016 at 20:15
+@ajcr thanks for the caveat, very appreciated -
+as smileys and maybe's were weaved into my response,these should indicated, the change is massive but of course, only available for CPython (reference implementation) and PyPy. For something completely different ... I rarely talk to non-implementation details when coding man-machine instructions. If it would only have been Jython ;-) ... I might not have had the courage to write it.
+– Dilettant
+Sep 10, 2016 at 20:22
+OrderedDict definitely won't be dropped; instead, it will become a thin wrapper around the current dict implementation (so you might add that it will become more compact, too). Adding that snippet with the ImportError isn't quite the best idea due to it misleading readers that OrderedDict has no use.
+– Dimitris Fasarakis Hilliard
+Dec 10, 2016 at 13:33
+@JimFasarakis-Hilliard thank you for the feedback. "Quite best ideas" made me smile - future is often hard to predict. But I like your suggestion will check the sources, try it and then update the answer accordingly. Thanks again.
+– Dilettant
+Dec 10, 2016 at 13:58
+9
+@AlexRiley This caveat is no longer accurate.
+Python3.7 guarantees ordered dictionaries.
+– gerrit
+Dec 19, 2018 at 17:12
+|
+Show 1 more comment
+83
+It can often be very handy to use namedtuple. For example, you have a dictionary of 'name' as keys and 'score' as values and you want to sort on 'score':
+import collections
+Player = collections.namedtuple('Player', 'score name')
+d = {'John':5, 'Alex':10, 'Richard': 7}
+sorting with lowest score first:
+worst = sorted(Player(v,k) for (k,v) in d.items())
+sorting with highest score first:
+best = sorted([Player(v,k) for (k,v) in d.items()], reverse=True)
+Now you can get the name and score of, let's say the second-best player (index=1) very Pythonically like this:
+player = best[1]
+player.name
+'Richard'
+player.score
+7
+Share
+Improve this answer
+Follow
+edited Apr 24, 2017 at 2:11
+vallentin
+21.2k66 gold badges4949 silver badges7272 bronze badges
+answered Aug 30, 2011 at 0:30
+RemiRemi
+19.3k88 gold badges5353 silver badges4141 bronze badges
+2
+How could I convert it back to a dictionary?
+– rowana
+Feb 7, 2017 at 20:31
+as_list=[Player(v,k) for (k,v) in d.items()]
+as_dict=dict((p.name,p.score) for p in as_list)
+– Remi
+Feb 23, 2017 at 12:31
+Add a comment
+|
+52
+I had the same problem, and I solved it like this:
+WantedOutput = sorted(MyDict, key=lambda x : MyDict[x])
+(People who answer "It is not possible to sort a dict" did not read the question! In fact, "I can sort on the keys, but how can I sort based on the values?" clearly means that he wants a list of the keys sorted according to the value of their values.)
+Please notice that the order is not well defined (keys with the same value will be in an arbitrary order in the output list).
+Share
+Improve this answer
+Follow
+edited Nov 28, 2017 at 13:44
+Peter Mortensen
+30k2121 gold badges9999 silver badges124124 bronze badges
+answered Nov 18, 2010 at 14:19
+jimifikijimifiki
+5,15411 gold badge3232 silver badges5555 bronze badges
+3
+1
+You are missing the value from the result
+– Dejell
+Jan 7, 2014 at 20:54
+Note that you're both iterating the dictionary and fetching values by their key, so performance wise this is not an optimal solution.
+– Ron Klein
+Sep 21, 2016 at 8:00
+1
+@Dejell: as the contributor says, he interprets the question as "can I get the list of keys sorted according to the values". We don't need the values in the result, we have them in the dictionary.
+– Max
+Jan 12, 2019 at 3:19
+Add a comment
+|
+50
+If values are numeric you may also use Counter from collections.
+from collections import Counter
+x = {'hello': 1, 'python': 5, 'world': 3}
+c = Counter(x)
+print(c.most_common())
+>> [('python', 5), ('world', 3), ('hello', 1)]
+Share
+Improve this answer
+Follow
+edited May 17, 2019 at 13:48
+Georgy
+9,86277 gold badges5757 silver badges6666 bronze badges
+answered Jun 27, 2012 at 15:43
+Ivan SasIvan Sas
+98311 gold badge99 silver badges1414 bronze badges
+2
+what about if you dictionary is >>> x={'hello':1,'python':5, 'world':300}
+– James
+Dec 28, 2013 at 13:17
+@yopy Counter({'hello':1, 'python':5, 'world':300}).most_common() gives [('world', 300), ('python', 5), ('hello', 1)]. This actually works for any sortable value type (although many other Counter operations do require values to be comparable to ints).
+– lvc
+Dec 28, 2013 at 13:58
+Add a comment
+|
+41
+In Python 2.7, simply do:
+from collections import OrderedDict
+# regular unsorted dictionary
+d = {'banana': 3, 'apple':4, 'pear': 1, 'orange': 2}
+# dictionary sorted by key
+OrderedDict(sorted(d.items(), key=lambda t: t[0]))
+OrderedDict([('apple', 4), ('banana', 3), ('orange', 2), ('pear', 1)])
+# dictionary sorted by value
+OrderedDict(sorted(d.items(), key=lambda t: t[1]))
+OrderedDict([('pear', 1), ('orange', 2), ('banana', 3), ('apple', 4)])
+copy-paste from : http://docs.python.org/dev/library/collections.html#ordereddict-examples-and-recipes
+Enjoy ;-)
+Share
+Improve this answer
+Follow
+answered Aug 22, 2013 at 8:38
+sweetdreamsweetdream
+1,1511111 silver badges1313 bronze badges
+Add a comment
+|
+31
+This is the code:
+import operator
+origin_list = [
+{"name": "foo", "rank": 0, "rofl": 20000},
+{"name": "Silly", "rank": 15, "rofl": 1000},
+{"name": "Baa", "rank": 300, "rofl": 20},
+{"name": "Zoo", "rank": 10, "rofl": 200},
+{"name": "Penguin", "rank": -1, "rofl": 10000}
+]
+print ">> Original >>"
+for foo in origin_list:
+print foo
+print "\n>> Rofl sort >>"
+for foo in sorted(origin_list, key=operator.itemgetter("rofl")):
+print foo
+print "\n>> Rank sort >>"
+for foo in sorted(origin_list, key=operator.itemgetter("rank")):
+print foo
+Here are the results:
+Original
+{'name': 'foo', 'rank': 0, 'rofl': 20000}
+{'name': 'Silly', 'rank': 15, 'rofl': 1000}
+{'name': 'Baa', 'rank': 300, 'rofl': 20}
+{'name': 'Zoo', 'rank': 10, 'rofl': 200}
+{'name': 'Penguin', 'rank': -1, 'rofl': 10000}
+Rofl
+{'name': 'Baa', 'rank': 300, 'rofl': 20}
+{'name': 'Zoo', 'rank': 10, 'rofl': 200}
+{'name': 'Silly', 'rank': 15, 'rofl': 1000}
+{'name': 'Penguin', 'rank': -1, 'rofl': 10000}
+{'name': 'foo', 'rank': 0, 'rofl': 20000}
+Rank
+{'name': 'Penguin', 'rank': -1, 'rofl': 10000}
+{'name': 'foo', 'rank': 0, 'rofl': 20000}
+{'name': 'Zoo', 'rank': 10, 'rofl': 200}
+{'name': 'Silly', 'rank': 15, 'rofl': 1000}
+{'name': 'Baa', 'rank': 300, 'rofl': 20}
+Share
+Improve this answer
+Follow
+edited Mar 2, 2016 at 7:42
+icedwater
+4,43233 gold badges3232 silver badges4747 bronze badges
+answered Mar 8, 2011 at 2:06
+PedroMorganPedroMorgan
+8981212 silver badges1515 bronze badges
+Add a comment
+|
+31
+Try the following approach. Let us define a dictionary called mydict with the following data:
+mydict = {'carl':40,
+'alan':2,
+'bob':1,
+'danny':3}
+If one wanted to sort the dictionary by keys, one could do something like:
+for key in sorted(mydict.iterkeys()):
+print "%s: %s" % (key, mydict[key])
+This should return the following output:
+alan: 2
+bob: 1
+carl: 40
+danny: 3
+On the other hand, if one wanted to sort a dictionary by value (as is asked in the question), one could do the following:
+for key, value in sorted(mydict.iteritems(), key=lambda (k,v): (v,k)):
+print "%s: %s" % (key, value)
+The result of this command (sorting the dictionary by value) should return the following:
+bob: 1
+alan: 2
+danny: 3
+carl: 40
+Share
+Improve this answer
+Follow
+edited May 23, 2018 at 23:11
+Peter Mortensen
+30k2121 gold badges9999 silver badges124124 bronze badges
+answered Apr 7, 2014 at 4:46
+Nathaniel PayneNathaniel Payne
+2,67911 gold badge2525 silver badges3232 bronze badges
+2
+Awesome! for key, value in sorted(mydict.iteritems(), key=lambda (k,v): v["score"]): allows you to sort by a subkey
+– Andomar
+Jul 7, 2017 at 19:08
+this doesn't work in later versions of python that dont support tuple unpacking and where dicts no longer have iteritems()
+– lb_so
+Jun 5, 2021 at 10:30
+Add a comment
+|
+30
+Starting from Python 3.6, dict objects are now ordered by insertion order. It's officially in the specs of Python 3.7.
+>>> words = {"python": 2, "blah": 4, "alice": 3}
+>>> dict(sorted(words.items(), key=lambda x: x[1]))
+{'python': 2, 'alice': 3, 'blah': 4}
+Before that, you had to use OrderedDict.
+Python 3.7 documentation says:
+Changed in version 3.7: Dictionary order is guaranteed to be insertion
+order. This behavior was implementation detail of CPython from 3.6.
+Share
+Improve this answer
+Follow
+edited Oct 24, 2018 at 14:19
+answered Sep 15, 2018 at 13:37
+Maxime ChéramyMaxime Chéramy
+16.3k77 gold badges5050 silver badges7373 bronze badges
+1
+works great! dict(sorted(words.items(), key=lambda x: x[1], reverse=True)) for DESC
+– vizyourdata
+Nov 19, 2018 at 20:10
+Add a comment
+|
+27
+You can create an "inverted index", also
+from collections import defaultdict
+inverse= defaultdict( list )
+for k, v in originalDict.items():
+inverse[v].append( k )
+Now your inverse has the values; each value has a list of applicable keys.
+for k in sorted(inverse):
+print k, inverse[k]
+Share
+Improve this answer
+Follow
+answered Mar 5, 2009 at 1:52
+S.LottS.Lott
+372k7878 gold badges497497 silver badges766766 bronze badges
+Add a comment
+|
+25
+You can use the collections.Counter. Note, this will work for both numeric and non-numeric values.
+>>> x = {1: 2, 3: 4, 4:3, 2:1, 0:0}
+>>> from collections import Counter
+>>> #To sort in reverse order
+>>> Counter(x).most_common()
+[(3, 4), (4, 3), (1, 2), (2, 1), (0, 0)]
+>>> #To sort in ascending order
+>>> Counter(x).most_common()[::-1]
+[(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
+>>> #To get a dictionary sorted by values
+>>> from collections import OrderedDict
+>>> OrderedDict(Counter(x).most_common()[::-1])
+OrderedDict([(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)])
+Share
+Improve this answer
+Follow
+edited Apr 3, 2014 at 17:04
+Peter Mortensen
+30k2121 gold badges9999 silver badges124124 bronze badges
+answered Mar 9, 2013 at 12:30
+AbhijitAbhijit
+58.8k1616 gold badges117117 silver badges195195 bronze badges
+1
+7
+How is this different from Ivan Sas's answer?
+– Peter Mortensen
+Apr 3, 2014 at 17:07
+Add a comment
+|
+20
+You can use a skip dict which is a dictionary that's permanently sorted by value.
+>>> data = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+>>> SkipDict(data)
+{0: 0.0, 2: 1.0, 1: 2.0, 4: 3.0, 3: 4.0}
+If you use keys(), values() or items() then you'll iterate in sorted order by value.
+It's implemented using the skip list datastructure.
+Share
+Improve this answer
+Follow
+answered Sep 25, 2014 at 22:56
+malthemalthe
+9151010 silver badges1919 bronze badges
+2
+can we change the order of sort, right now, it is asending, but I want decsending.
+– Suleman Elahi
+Feb 6, 2020 at 12:15
+afaik you would have to negate your values in order to reverse the ordering
+– malthe
+Feb 6, 2020 at 13:14
+Add a comment
+|
+19
+You can also use custom function that can be passed to key.
+def dict_val(x):
+return x[1]
+x = {1: 2, 3: 4, 4: 3, 2: 1, 0: 0}
+sorted_x = sorted(x.items(), key=dict_val)
+Share
+Improve this answer
+Follow
+edited May 17, 2019 at 14:55
+Georgy
+9,86277 gold badges5757 silver badges6666 bronze badges
+answered May 25, 2017 at 18:13
+Vishwanath RawatVishwanath Rawat
+47766 silver badges1111 bronze badges
+1
+This is the only answer that worked so far in python 2.7
+– rkochev
+Jan 19, 2021 at 12:44
+Add a comment
+|
+17
+Of course, remember, you need to use OrderedDict because regular Python dictionaries don't keep the original order.
+from collections import OrderedDict
+a = OrderedDict(sorted(originalDict.items(), key=lambda x: x[1]))
+If you do not have Python 2.7 or higher, the best you can do is iterate over the values in a generator function. (There is an OrderedDict for 2.4 and 2.6
+here, but
+a) I don't know about how well it works
+and
+b) You have to download and install it of course. If you do not have administrative access, then I'm afraid the option's out.)
+def gen(originalDict):
+for x, y in sorted(zip(originalDict.keys(), originalDict.values()), key=lambda z: z[1]):
+yield (x, y)
+#Yields as a tuple with (key, value). You can iterate with conditional clauses to get what you want.
+for bleh, meh in gen(myDict):
+if bleh == "foo":
+print(myDict[bleh])
+You can also print out every value
+for bleh, meh in gen(myDict):
+print(bleh, meh)
+Please remember to remove the parentheses after print if not using Python 3.0 or above
+Share
+Improve this answer
+Follow
+edited May 17, 2019 at 16:17
+Georgy
+9,86277 gold badges5757 silver badges6666 bronze badges
+answered Jul 31, 2015 at 8:08
+rassa45rassa45
+3,41811 gold badge2727 silver badges4343 bronze badges
+1
+1
+regular Python dictionaries don't keep the original order — as of Python 3.7, they do.
+– gerrit
+Dec 19, 2018 at 17:13
+Add a comment
+|
+16
+from django.utils.datastructures import SortedDict
+def sortedDictByKey(self,data):
+"""Sorted dictionary order by key"""
+sortedDict = SortedDict()
+if data:
+if isinstance(data, dict):
+sortedKey = sorted(data.keys())
+for k in sortedKey:
+sortedDict[k] = data[k]
+return sortedDict
+Share
+Improve this answer
+Follow
+answered Nov 1, 2010 at 12:16
+ArgunArgun
+41755 silver badges2020 bronze badges
+1
+2
+question was: sort by value, not by keys... I like seeing a function. You can import collections and of course use sorted(data.values())
+– Remi
+Aug 30, 2011 at 0:38
+Add a comment
+|
+14
+Here is a solution using zip on d.values() and d.keys().
+A few lines down this link (on Dictionary view objects) is:
+This allows the creation of (value, key) pairs using zip(): pairs = zip(d.values(), d.keys()).
+So we can do the following:
+d = {'key1': 874.7, 'key2': 5, 'key3': 8.1}
+d_sorted = sorted(zip(d.values(), d.keys()))
+print d_sorted
+# prints: [(5, 'key2'), (8.1, 'key3'), (874.7, 'key1')]
+Share
+Improve this answer
+Follow
+answered Jun 20, 2015 at 1:44
+ScottScott
+5,54344 gold badges3434 silver badges5050 bronze badges
+0
+Add a comment
+|
+14
+As pointed out by Dilettant, Python 3.6 will now keep the order! I thought I'd share a function I wrote that eases the sorting of an iterable (tuple, list, dict). In the latter case, you can sort either on keys or values, and it can take numeric comparison into account. Only for >= 3.6!
+When you try using sorted on an iterable that holds e.g. strings as well as ints, sorted() will fail. Of course you can force string comparison with str(). However, in some cases you want to do actual numeric comparison where 12 is smaller than 20 (which is not the case in string comparison). So I came up with the following. When you want explicit numeric comparison you can use the flag num_as_num which will try to do explicit numeric sorting by trying to convert all values to floats. If that succeeds, it will do numeric sorting, otherwise it'll resort to string comparison.
+Comments for improvement welcome.
+def sort_iterable(iterable, sort_on=None, reverse=False, num_as_num=False):
+def _sort(i):
+# sort by 0 = keys, 1 values, None for lists and tuples
+try:
+if num_as_num:
+if i is None:
+_sorted = sorted(iterable, key=lambda v: float(v), reverse=reverse)
+else:
+_sorted = dict(sorted(iterable.items(), key=lambda v: float(v[i]), reverse=reverse))
+else:
+raise TypeError
+except (TypeError, ValueError):
+if i is None:
+_sorted = sorted(iterable, key=lambda v: str(v), reverse=reverse)
+else:
+_sorted = dict(sorted(iterable.items(), key=lambda v: str(v[i]), reverse=reverse))
+return _sorted
+if isinstance(iterable, list):
+sorted_list = _sort(None)
+return sorted_list
+elif isinstance(iterable, tuple):
+sorted_list = tuple(_sort(None))
+return sorted_list
+elif isinstance(iterable, dict):
+if sort_on == 'keys':
+sorted_dict = _sort(0)
+return sorted_dict
+elif sort_on == 'values':
+sorted_dict = _sort(1)
+return sorted_dict
+elif sort_on is not None:
+raise ValueError(f"Unexpected value {sort_on} for sort_on. When sorting a dict, use key or values")
+else:
+raise TypeError(f"Unexpected type {type(iterable)} for iterable. Expected a list, tuple, or dict")
+Share
+Improve this answer
+Follow
+edited Feb 19, 2021 at 9:00
+answered Mar 2, 2018 at 16:48
+Bram VanroyBram Vanroy
+24.8k2121 gold badges120120 silver badges213213 bronze badges
+Add a comment
+|
+13
+The collections solution mentioned in another answer is absolutely superb, because you retain a connection between the key and value which in the case of dictionaries is extremely important.
+I don't agree with the number one choice presented in another answer, because it throws away the keys.
+I used the solution mentioned above (code shown below) and retained access to both keys and values and in my case the ordering was on the values, but the importance was the ordering of the keys after ordering the values.
+from collections import Counter
+x = {'hello':1, 'python':5, 'world':3}
+c=Counter(x)
+print( c.most_common() )
+>> [('python', 5), ('world', 3), ('hello', 1)]
+Share
+Improve this answer
+Follow
+edited Oct 7, 2021 at 10:56
+answered Mar 3, 2014 at 14:58
+Eamonn KennyEamonn Kenny
+1,6011515 silver badges1717 bronze badges
+2
+1
+I disagree with your backwards compatibility comment ... there may be no justification at all to maintain it --- in fact, it may be an overtly negative thing to do.
+– lb_so
+Jun 5, 2021 at 10:32
+@lb_so totally agree. I should revise my answer, because nobody should be using python 2.
+– Eamonn Kenny
+Oct 7, 2021 at 10:54
+Add a comment
+|
+10
+Use ValueSortedDict from dicts:
+from dicts.sorteddict import ValueSortedDict
+d = {1: 2, 3: 4, 4:3, 2:1, 0:0}
+sorted_dict = ValueSortedDict(d)
+print sorted_dict.items()
+[(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
+Share
+Improve this answer
+Follow
+answered Oct 19, 2011 at 6:25
+pontyponty
+59477 silver badges88 bronze badges
+Add a comment
+|
+10
+Just learned relevant skill from Python for Everybody.
+You may use a temporary list to help you to sort the dictionary:
+#Assume dictionary to be:
+d = {'apple': 500.1, 'banana': 1500.2, 'orange': 1.0, 'pineapple': 789.0}
+# create a temporary list
+tmp = []
+# iterate through the dictionary and append each tuple into the temporary list
+for key, value in d.items():
+tmptuple = (value, key)
+tmp.append(tmptuple)
+# sort the list in ascending order
+tmp = sorted(tmp)
+print (tmp)
+If you want to sort the list in descending order, simply change the original sorting line to:
+tmp = sorted(tmp, reverse=True)
+Using list comprehension, the one liner would be:
+#Assuming the dictionary looks like
+d = {'apple': 500.1, 'banana': 1500.2, 'orange': 1.0, 'pineapple': 789.0}
+#One liner for sorting in ascending order
+print (sorted([(v, k) for k, v in d.items()]))
+#One liner for sorting in descending order
+print (sorted([(v, k) for k, v in d.items()], reverse=True))
+Sample Output:
+#Asending order
+[(1.0, 'orange'), (500.1, 'apple'), (789.0, 'pineapple'), (1500.2, 'banana')]
+#Descending order
+[(1500.2, 'banana'), (789.0, 'pineapple'), (500.1, 'apple'), (1.0, 'orange')]
+Share
+Improve this answer
+Follow
+edited May 27, 2018 at 17:59
+answered May 27, 2018 at 17:45
+mcgagmcgag
+18511 silver badge1313 bronze badges
+3
+this is sorting by keys, not by values.
+– Rubel
+Feb 4, 2020 at 13:50
+If you want to print it in the initial format you should do:print ([(k,v) for v,k in sorted([(v,k) for k,v in d.items()])]) . The output is: [('orange', 1.0), ('apple', 500.1), ('pineapple', 789.0), ('banana', 1500.2)]. With [(k,v) for v,k in sorted([(v,k) for k,v in d.items()], reverse = True)]
+the output is: [('banana', 1500.2), ('pineapple', 789.0), ('apple', 500.1), ('orange', 1.0)]
+– Hermes Morales
+May 4, 2020 at 20:14
+@Rubel
+Double check the output! e.g., [(1.0, 'orange'), (500.1, 'apple'), (789.0, 'pineapple'), (1500.2, 'banana')] is sorted according values.
+– mcgag
+Aug 7, 2021 at 3:34
+Add a comment
+|
+9
+Iterate through a dict and sort it by its values in descending order:
+$ python --version
+Python 3.2.2
+$ cat sort_dict_by_val_desc.py
+dictionary = dict(siis = 1, sana = 2, joka = 3, tuli = 4, aina = 5)
+for word in sorted(dictionary, key=dictionary.get, reverse=True):
+print(word, dictionary[word])
+$ python sort_dict_by_val_desc.py
+aina 5
+tuli 4
+joka 3
+sana 2
+siis 1
+Share
+Improve this answer
+Follow
+answered Oct 30, 2011 at 19:42
+juhohjuhoh
+9911 silver badge11 bronze badge
+Add a comment
+|
+9
+If your values are integers, and you use Python 2.7 or newer, you can use collections.Counter instead of dict. The most_common method will give you all items, sorted by the value.
+Share
+Improve this answer
+Follow
+edited Jan 24, 2012 at 19:50
+answered Jan 24, 2012 at 19:28
+Petr ViktorinPetr Viktorin
+62.5k88 gold badges7878 silver badges7878 bronze badges
+Add a comment
+|
+8
+This works in 3.1.x:
+import operator
+slovar_sorted=sorted(slovar.items(), key=operator.itemgetter(1), reverse=True)
+print(slovar_sorted)
+Share
+Improve this answer
+Follow
+edited Nov 6, 2012 at 19:27
+Nathaniel Ford
+18.6k2020 gold badges8181 silver badges9393 bronze badges
+answered Nov 16, 2011 at 7:32
+iFailiFail
+8911 silver badge11 bronze badge
+Add a comment
+|
+8
+For the sake of completeness, I am posting a solution using heapq. Note, this method will work for both numeric and non-numeric values
+>>> x = {1: 2, 3: 4, 4:3, 2:1, 0:0}
+>>> x_items = x.items()
+>>> heapq.heapify(x_items)
+>>> #To sort in reverse order
+>>> heapq.nlargest(len(x_items),x_items, operator.itemgetter(1))
+[(3, 4), (4, 3), (1, 2), (2, 1), (0, 0)]
+>>> #To sort in ascending order
+>>> heapq.nsmallest(len(x_items),x_items, operator.itemgetter(1))
+[(0, 0), (2, 1), (1, 2), (4, 3), (3, 4)]
+Share
+Improve this answer
+Follow
+answered Mar 23, 2013 at 14:19
+AbhijitAbhijit
+58.8k1616 gold badges117117 silver badges195195 bronze badges
+Add a comment
+|
+1
+2
+Next
+Not the answer you're looking for? Browse other questions tagged python sorting dictionary
+or ask your own question.
+The Overflow Blog
+The 2022 Developer Survey is now open
+Feeling burned out? You’re not the only one (Ep. 440)
+Featured on Meta
+Staging Ground: Reviewer Motivation, Scaling, and Open Questions
+Overhauling our community's closure reasons and guidance
+Linked
+146
+Sorting dictionary keys in python
+94
+sort dict by value python
+51
+sort values and return list of keys from dict python
+19
+Sort dict by highest value?
+36
+How to sort a dictionary by key?
+27
+Sort Python dict by datetime value
+14
+How to get the 3 items with the highest value from dictionary?
+16
+Sort dict by value and return dict, not list of tuples
+8
+sort list by frequency-value in python
+7
+How to use the dictionary function?
+See more linked questions
+Related
+898
+How do you sort a dictionary by value?
+6271
+How do I merge two dictionaries in a single expression (take union of dictionaries)?
+2465
+How do I sort a list of dictionaries by a value of the dictionary?
+1814
+Sort a Map<Key, Value> by values
+3308
+How can I add new keys to a dictionary?
+3653
+Sort array of objects by string property value
+2679
+Check if a given key already exists in a dictionary
+1306
+How can I sort a dictionary by key?
+2534
+How can I remove a key from a Python dictionary?
+Hot Network Questions
+How to help a player create a character with more long term motivations?
+Ncuti Gatwa is, according to Wikipedia, pronounced /ˈʃuːti ˈɡætwɑː/ - where is the NC orthography derived from?
+Why did this character need America Chavez?
+What does `tar: Cannot connect to …: resolve failed` mean?
+Why can water not be transferred within California?
+How to manage time pressure?
+Why when I shift the color temperature to lower K the image get bluish and not yellowish?
+Fastest 8-bit microprocessor for multiply-accumulate?
+Invited to give talk but want to refuse
+What's the cheapest way to wire these lights?
+What would be the difference between 〜してんじゃねえ and するんじゃねえ?
+My dad doesn't want me to TOUCH alcohol
+After buying from a brick & mortar shop they've contacted me to say buying things from them is consent to arbitration. Is this legal?
+Monitoring Apply / @@@ over large lists
+How is an animal defined as in rule 286 of the UK highway code?
+How can a reed switch be used for high current applications?
+Doing OTP two or more times with a biased TRNG: Will this have the same security as if was done with a non-biased TRNG?
+Help identifying this landmark and road in "Los Angeles 1940s, Residential Area in color"
+Application of character theory to structure of groups
+Why double curly brackets in `\long\def\bold#1{{\bf#1}}`
+Why and when did "fowls" start being called "chickens"?
+Fireball alternative for a demon heavy campaign?
+Intuition behind the differential equation for forced oscillations
+chown - Operation not permitted even as root user
+more hot questions
+lang-py
+Stack Overflow
+Questions
+Help
+Products
+Teams
+Advertising
+Collectives
+Talent
+Company
+About
+Press
+Work Here
+Legal
+Privacy Policy
+Terms of Service
+Contact Us
+Cookie Settings
+Cookie Policy
+Stack Exchange Network
+Technology
+Culture & recreation
+Life & arts
+Science
+Professional
+Business
+API
+Data
+Blog
+Facebook
+Twitter
+LinkedIn
+Instagram
+Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under cc by-sa.
+rev 2022.5.11.42086
+Your privacy
+By clicking “Accept all cookies”, you agree Stack Exchange can store cookies on your device and disclose information in accordance with our Cookie Policy.
+Accept all cookies
+Customize settings
