@@ -1,0 +1,253 @@
+
+
+Google chrome history sqlite - Stack Overflow
+Stack Overflow
+About
+Products
+For Teams
+Stack Overflow
+Public questions & answers
+Stack Overflow for Teams
+Where developers & technologists share private knowledge with coworkers
+Talent
+Build your employer brand
+Advertising
+Reach developers & technologists worldwide
+About the company
+Loading…
+current community
+Stack Overflow
+help
+chat
+Meta Stack Overflow
+your communities
+Sign up or log in to customize your list.
+more stack exchange communities
+company blog
+Log in
+Sign up
+Home
+Public
+Questions
+Tags
+Users
+Companies
+Collectives
+Explore Collectives
+Teams
+Stack Overflow for Teams
+– Start collaborating and sharing organizational knowledge.
+Create a free Team
+Why Teams?
+Teams
+Create free Team
+Collectives™ on Stack Overflow
+Find centralized, trusted content and collaborate around the technologies you use most.
+Learn more
+Teams
+Q&A for work
+Connect and share knowledge within a single location that is structured and easy to search.
+Learn more
+Google chrome history sqlite
+Ask Question
+Asked
+10 years ago
+Modified
+11 months ago
+Viewed
+13k times
+6
+6
+The data is from Chrome Google history file.
+I want to know the meaning of columns in tables. So I find one table called visits in the history is:
+CREATE TABLE visits(id INTEGER PRIMARY KEY,url INTEGER NOT NULL,visit_time INTEGER NOT NULL,from_visit INTEGER,transition INTEGER DEFAULhT 0 NOT NULL,segment_id INTEGER,is_indexed BOOLEAN)
+The table's result is :
+1|10|12979306250150765|0|268435457|1|0
+17|14|12979306291009421|0|838860801|2|0
+18|14|12979306291724492|0|805306368|0|0
+19|14|12979306296042195|0|838860808|0|0
+20|14|12979306296322297|0|805306368|0|0
+21|14|12979306298922534|0|838860808|0|0
+22|14|12979306299261896|0|805306368|0|0
+23|15|12979306305614105|0|805306368|0|0
+24|15|12979306310110294|0|805306368|0|1
+25|16|12979306316672464|0|805306368|0|1
+So, another table called urls, which is also in this history sqlite is:
+CREATE TABLE "urls"(id INTEGER PRIMARY KEY,url LONGVARCHAR,title LONGVARCHAR,visit_count INTEGER DEFAULT 0 NOT NULL,typed_count INTEGER DEFAULT 0 NOT NULL,last_visit_time INTEGER NOT NULL,hidden INTEGER DEFAULT 0 NOT NULL,favicon_id INTEGER DEFAULT 0 NOT NULL)
+The table's result is:
+1|http://cateee.net/xxxx|Linuxxxx|0|0|0|0|0
+2|http://kernel.org/|Index of xxxxxxxxx|0|0|0|0|0
+3|http://repo.orxxxxxxxxxxxxx|xxx|0|0|0|0|0
+4|http://stackoverflow.com/xxxx|xxxxxx|7|0|12979644275181782|0|0
+5|http://stackoverflow.com/questions/xxxxxxx|linuxxxxxxxxxxxxxxxx|0|0|0|0|0
+6|http://www.db-class.org/xxxxxxxxxxxxxxxx|xxxxxxx|6|0|12979306496245203|0|0
+7|http://www.xxxxxxxxxxxxxxxxxxx|xxxxxxxxxxxxxxxxxx|0|0|0|0|0
+8|http://www.xxxxxxxxxxxxxxxx|xxxxxxxxxxxxxxxxxxx|0|0|0|0|0
+10|http://www.google.com/|PYTHON - Googlexxxxxxxxx|1|1|12979306250150765|0|0
+14|http://www.facebook.com/|Facebook|6|2|12979306750272709|0|0
+15|http://www.facebook.com/profile.phpxxxxxxxxx|xxxxxxxxxxxxxxx|2|0|12979306310110294|0|0
+So my problem are: is the urls table's first column called url_id represents in the visits table's second column called url INTEGER, but the relationship is not clear. And what is the meaning of transition INTEGER in visits table, can I extract the time from these, I need to get useful information from these tables, and make their relationship clear.
+google-chrome sqlite browser-history
+Share
+Improve this question
+Follow
+edited Mar 21, 2017 at 9:43
+Brian Tompsett - 汤莱恩
+5,4386868 gold badges5454 silver badges126126 bronze badges
+asked Apr 25, 2012 at 0:04
+AlexAlex
+85933 gold badges1212 silver badges2020 bronze badges
+Add a comment
+|
+1 Answer
+1
+Sorted by:
+Reset to default
+Highest score (default)
+Date modified (newest first)
+Date created (oldest first)
+9
+This site had a lot of helpful information about Chrome's SQLite tables, and how to query the tables.
+An example they give on that page of joining the two tables "urls" and "visits" is as follows:
+SELECT urls.url, urls.title, urls.visit_count, urls.typed_count, urls.last_visit_time, urls.hidden, visits.visit_time, visits.from_visit, visits.transition
+FROM urls, visits
+WHERE
+urls.id = visits.url
+And as for the "transition" field in the visits table, this value tells you how the URL was loaded into the browser. I'll let you check out the link I gave you for more details.
+Share
+Improve this answer
+Follow
+edited Jun 12, 2021 at 1:45
+SeaDude
+2,37311 gold badge2121 silver badges4040 bronze badges
+answered May 22, 2012 at 8:56
+mobeetsmobeets
+43022 silver badges1111 bronze badges
+2
+there is a column in there in visits table named as visit_duration. Please confirm if its in milliseconds or microseconds.
+– Vikas Bansal
+Apr 4, 2016 at 9:09
+@VikasBansal Did you find if its in milliseconds or microseconds?
+– Jishan
+Sep 24, 2019 at 22:01
+Add a comment
+|
+Your Answer
+Thanks for contributing an answer to Stack Overflow!Please be sure to answer the question. Provide details and share your research!But avoid …Asking for help, clarification, or responding to other answers.Making statements based on opinion; back them up with references or personal experience.To learn more, see our tips on writing great answers.
+Draft saved
+Draft discarded
+Sign up or log in
+Sign up using Google
+Sign up using Facebook
+Sign up using Email and Password
+Submit
+Post as a guest
+Name
+Email
+Required, but never shown
+Post as a guest
+Name
+Email
+Required, but never shown
+Post Your Answer
+Discard
+By clicking “Post Your Answer”, you agree to our terms of service, privacy policy and cookie policy
+Not the answer you're looking for? Browse other questions tagged google-chrome sqlite browser-history
+or ask your own question.
+The Overflow Blog
+The 2022 Developer Survey is now open
+Feeling burned out? You’re not the only one (Ep. 440)
+Featured on Meta
+Staging Ground: Reviewer Motivation, Scaling, and Open Questions
+Overhauling our community's closure reasons and guidance
+Linked
+0
+How do i ping websites in Python?
+Related
+1307
+How can I list the tables in a SQLite database file that was opened with ATTACH?
+1042
+How do I check in SQLite whether a table exists?
+3202
+Improve INSERT-per-second performance of SQLite
+1957
+Disable same origin policy in Chrome
+1338
+How to manually send HTTP POST requests from Firefox or Chrome browser
+1693
+Disabling Chrome cache for website development
+1582
+Getting Chrome to accept self-signed localhost certificate
+1220
+How do I get ASP.NET Web API to return JSON instead of XML using Chrome?
+923
+Remove blue border from css custom-styled button in Chrome
+Hot Network Questions
+Why double curly brackets in `\long\def\bold#1{{\bf#1}}`
+Novel about a teenage female protagonist on a FTL spaceflight in a deterministic universe
+Matrix Meets ASCII Art
+How to typeset the Glagolitic script in LaTeX? (ⰳⰾⰰⰳⱁⰾⰹⱌⰰ, глаголица)
+chown - Operation not permitted even as root user
+Murder in cult of identical people
+What's the cheapest way to wire these lights?
+Why is a capacitor considered a short circuit at start up?
+What would be the difference between 〜してんじゃねえ and するんじゃねえ?
+I'm the 1st author of a paper in a top conference in my field, and even then my PhD application got rejected from 5 out of 6 programs, is this normal?
+Intuition behind the differential equation for forced oscillations
+Could the same person be First Minister in Northern Ireland and Taoiseach in the Republic of Ireland?
+Postfix - Block Spam identified by log message "warning: hostname X does not resolve to address Y"
+Why does the current carrying capability of a cable increase with temperature
+Why does representing functors help solving Diophantine equations?
+Why and when did "fowls" start being called "chickens"?
+Differences between groups and rings when understood as categories
+Why would vampires sire vampires of lesser blood than they have to?
+My dad doesn't want me to TOUCH alcohol
+Doing OTP two or more times with a biased TRNG: Will this have the same security as if was done with a non-biased TRNG?
+How are anomalies possible?
+Why aren't Runge-Kutta methods used for molecular dynamics simulations?
+What is the connotation of “The Hitchhiker's Guide to XYZ”?
+What kind of component is this resistor-like part?
+more hot questions
+Question feed
+Subscribe to RSS
+Question feed
+To subscribe to this RSS feed, copy and paste this URL into your RSS reader.
+lang-sql
+Stack Overflow
+Questions
+Help
+Products
+Teams
+Advertising
+Collectives
+Talent
+Company
+About
+Press
+Work Here
+Legal
+Privacy Policy
+Terms of Service
+Contact Us
+Cookie Settings
+Cookie Policy
+Stack Exchange Network
+Technology
+Culture & recreation
+Life & arts
+Science
+Professional
+Business
+API
+Data
+Blog
+Facebook
+Twitter
+LinkedIn
+Instagram
+Site design / logo © 2022 Stack Exchange Inc; user contributions licensed under cc by-sa.
+rev 2022.5.11.42086
+Your privacy
+By clicking “Accept all cookies”, you agree Stack Exchange can store cookies on your device and disclose information in accordance with our Cookie Policy.
+Accept all cookies
+Customize settings

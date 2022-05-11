@@ -1,2 +1,8 @@
 https://www.chem-astu.ru/chair/study/algebra-geometry/
 http://mathprofi.ru/lineinye_differencialnye_uravnenija.html
+https://www.geeksforgeeks.org/polymorphism-in-python/?ref=lbp
+https://www.geeksforgeeks.org/reading-writing-text-files-python/
+https://www.python.org
+https://docs.python.org/3/library/site.html
+https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
+https://stackoverflow.com/questions/10307673/google-chrome-history-sqlite
