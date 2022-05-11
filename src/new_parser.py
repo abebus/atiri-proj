@@ -13,8 +13,6 @@ def parser(site, tag=None):
 		for val in search_list:
 			for meta in soup.find_all('meta', attrs={'name': val}):
 				text += (meta['content'].strip())
-				
-		text += '\n\n' + soup.find_all('title')[0].get_text()
 		return text
 	
 	def get_plain_text(soup):
@@ -38,4 +36,4 @@ def parser(site, tag=None):
 
 def test():
 	f = list(open('sites.txt', encoding='utf-8'))[1]
-	print(parser('https://metanit.com/python/tutorial/', 'both'))
+	print(parser(f, 'both'))
