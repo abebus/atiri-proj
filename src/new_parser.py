@@ -38,3 +38,4 @@ if __name__ == '__main__':
 	#f = list(open('sites.txt', encoding='utf-8'))[1]
 	#print(parser('https://metanit.com/python/tutorial/', 'meta'))
 	pass
+
