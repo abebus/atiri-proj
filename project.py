@@ -1,11 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QApplication, QTableWidgetItem
-from PyQt5.QtWidgets import QMainWindow, QTableWidget, QLabel, QComboBox
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox
 from PyQt5 import uic
 import sqlite3
 import sys
 
-'''themes = {'IT': ['', False], 'python': ['', False], 'c++': ['', False], 'java': ['', False], 'sport': ['', False],
-          'health': ['', False], 'literature': ['', False]}'''
 a = []
 
 class FirstWind(QMainWindow):
@@ -68,7 +66,6 @@ class Greeting(QMainWindow):  # приветственное окно
     def __init__(self):
         super().__init__()
         uic.loadUi('1.1.ui', self)
-        self.setWindowTitle('Приветствуем Вас!')
         self.pb.clicked.connect(self.updating)
 
     def updating(self):
