@@ -15,6 +15,7 @@ def final():
 
 if __name__ == '__main__':
     final()
+    #wtf
         #print(parser(i[0]))
 
     #print(get_urls_from_history('Professional', 'Chrome', 'Profile 1'))
