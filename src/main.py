@@ -9,7 +9,7 @@ def final():
     standart = parser('https://python.org')
     for i in f:
         if comparison(standart, i[0]) >= 0.05:
-            answer.append(tuple(i[0]))
+            answer.append((i[0],))
             #print(i[0])
     return answer
 

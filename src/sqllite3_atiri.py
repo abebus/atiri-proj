@@ -67,26 +67,26 @@ finally:
 
 
 
-try:
-    sqlite_connection = sqlite3.connect('sqlite_python.db')
-    cursor = sqlite_connection.cursor()
-    print("Подключен к SQLite")
-
-    sqlite_insert_query = """INSERT INTO sql_atiri
-                          (python)
-                          VALUES
-                          ('https://pythonworld/');"""
-    count = cursor.execute(sqlite_insert_query)
-    sqlite_connection.commit()
-    print("Запись успешно вставлена в таблицу sqlitedb_developers ", cursor.rowcount)
-    cursor.close()
-
-except sqlite3.Error as error:
-    print("Ошибка при работе с SQLite", error)
-finally:
-    if sqlite_connection:
-        sqlite_connection.close()
-        print("Соединение с SQLite закрыто")
+#try:
+#    sqlite_connection = sqlite3.connect('sqlite_python.db')
+#    cursor = sqlite_connection.cursor()
+#    print("Подключен к SQLite")
+#
+#    sqlite_insert_query = """INSERT INTO sql_atiri
+#                          (python)
+#                          VALUES
+#                          ('https://pythonworld/');"""
+#    count = cursor.execute(sqlite_insert_query)
+#    sqlite_connection.commit()
+#    print("Запись успешно вставлена в таблицу sqlitedb_developers ", cursor.rowcount)
+#    cursor.close()
+#
+#except sqlite3.Error as error:
+#    print("Ошибка при работе с SQLite", error)
+#finally:
+#    if sqlite_connection:
+#        sqlite_connection.close()
+#        print("Соединение с SQLite закрыто")
 
 
 def insert_multiple_records(records):
@@ -112,11 +112,13 @@ def insert_multiple_records(records):
             sqlite_connection.close()
             print("Соединение с SQLite закрыто")
 
-#records_to_insert = [('https://python.org')]
+#records_to_insert = [('https://python.org',),
+#                     ('https://pythonru.com',),
+#                     ('https://habr.com',),]
 
-#records_to_insert_2 = final() # [,,,,,,]
+records_to_insert_2 = final() # [,,,,,,]
 
-#insert_multiple_records(records_to_insert_2)
+insert_multiple_records(records_to_insert_2)
 
 
 
