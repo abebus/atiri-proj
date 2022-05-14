@@ -1,7 +1,1 @@
-IT True
-python True
-c++ False
-java False
-Sport False
-Health False
-Literature False
+
