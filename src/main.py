@@ -1,4 +1,4 @@
-from get_urls import *
+from urls import *
 from parser1 import *
 from tf_idf import *
 from sqllite3_atiri import *
