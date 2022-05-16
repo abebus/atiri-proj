@@ -49,24 +49,6 @@ finally:
 #
 #
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #try:
 #    sqlite_connection = sqlite3.connect('sqlite_python.db')
 #    cursor = sqlite_connection.cursor()
@@ -115,11 +97,3 @@ def insert_multiple_records(records):
 #records_to_insert = [('https://python.org',),
 #                     ('https://pythonru.com',),
 #                     ('https://habr.com',),]
-
-records_to_insert_2 = final() # [,,,,,,]
-
-insert_multiple_records(records_to_insert_2)
-
-
-
-
