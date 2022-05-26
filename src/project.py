@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox
 from PyQt5 import uic
+from main import *
+from sqllite3_atiri import *
 import sqlite3
 import sys
 
@@ -101,7 +103,7 @@ class Page(QMainWindow):
         super().__init__()
         uic.loadUi('page.ui', self)
         self.lab = QLabel(self)
-        self.lab.setText(a[-1])
+        self.lab.setText(fetch())
         self.lab.move(50,50)
         self.pb.clicked.connect(self.back)
     def back(self):
@@ -111,7 +113,7 @@ class Page(QMainWindow):
 
 
 
-if __name__ == '__main__':
+def start():
     app = QApplication(sys.argv)
     f = open('counter.TXT', 'r+')
     counter = f.read()

@@ -1,4 +1,4 @@
-from main import *
+
 import sqlite3
 '''
 try:
@@ -93,6 +93,14 @@ def insert_multiple_records(records):
         if sqlite_connection:
             sqlite_connection.close()
             print("Соединение с SQLite закрыто")
+
+def fetch():
+    with sqlite3.connect('sqlite_python.db') as db:
+        cursor=db.cursor()
+        cursor.execute('SELECT python FROM sql_atiri')
+        product=cursor.fetchall()
+        product=str(product)
+    return product
 
 #records_to_insert = [('https://python.org',),
 #                     ('https://pythonru.com',),
