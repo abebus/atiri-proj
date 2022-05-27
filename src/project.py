@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QTextBrowser
 from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox
 from PyQt5 import uic
 from main import *
@@ -105,6 +105,13 @@ class Page(QMainWindow):
         self.lab = QLabel(self)
         self.lab.setText(fetch())
         self.lab.move(50,50)
+        self.linksbrowser = QTextBrowser(self)
+        self.linksbrowser.move(50,100)
+        self.linksbrowser.setOpenExternalLinks(True)
+        link = '<a href="https://stackoverflow.com/questions/49309034">LINK</a>'
+        dict = {'smth if we need it': link}
+        for key, value in dict.items():
+            self.linksbrowser.append('<span>{0}: {1}</span>'.format(key, value))
         self.pb.clicked.connect(self.back)
     def back(self):
         self.close()
