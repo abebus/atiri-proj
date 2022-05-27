@@ -8,6 +8,7 @@ import sys
 
 a = []
 
+
 class FirstWind(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -104,20 +105,26 @@ class Page(QMainWindow):
         uic.loadUi('page.ui', self)
         self.lab = QLabel(self)
         self.lab.setText(fetch())
-        self.lab.move(50,50)
+        self.lab.move(50, 50)
         self.linksbrowser = QTextBrowser(self)
-        self.linksbrowser.move(50,100)
+        self.linksbrowser.move(50, 100)
+        self.linksbrowser.setFixedSize(700, 450)
         self.linksbrowser.setOpenExternalLinks(True)
-        link = '<a href="https://stackoverflow.com/questions/49309034">LINK</a>'
-        dict = {'smth if we need it': link}
-        for key, value in dict.items():
-            self.linksbrowser.append('<span>{0}: {1}</span>'.format(key, value))
+        sqlite_connection = sqlite3.connect('sqlite_python.db')
+        cursor = sqlite_connection.cursor()
+        sqlite_select_query = """SELECT * from sql_atiri"""
+        cursor.execute(sqlite_select_query)
+        records = cursor.fetchall()
+        for row in records:
+            link = '<a href="{}">{}</a>'.format(row[0], row[0])
+            self.linksbrowser.append('<span>{0}</span>'.format(link))
+        self.linksbrowser.setStyleSheet(" { height:15%; width:70%} ")
         self.pb.clicked.connect(self.back)
+
     def back(self):
         self.close()
         self.menu = Menu()
         self.menu.show()
-
 
 
 def start():
