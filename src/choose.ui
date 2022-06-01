@@ -10,6 +10,12 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -18,10 +24,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>229</y>
+      <y>149</y>
       <width>81</width>
       <height>21</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>IT</string>
@@ -31,10 +43,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>270</y>
+      <y>190</y>
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>python</string>
@@ -44,10 +62,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>310</y>
+      <y>230</y>
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>c++</string>
@@ -57,10 +81,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>350</y>
+      <y>270</y>
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>java</string>
@@ -70,10 +100,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>390</y>
+      <y>310</y>
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Sport</string>
@@ -83,10 +119,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>430</y>
+      <y>350</y>
       <width>81</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Health</string>
@@ -96,10 +138,16 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>470</y>
+      <y>390</y>
       <width>101</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
     </property>
     <property name="text">
      <string>Literature</string>
@@ -108,10 +156,10 @@
    <widget class="QPushButton" name="pb">
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>470</y>
-      <width>359</width>
-      <height>28</height>
+      <x>608</x>
+      <y>457</y>
+      <width>191</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">
@@ -122,7 +170,7 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>90</y>
+      <y>60</y>
       <width>531</width>
       <height>51</height>
      </rect>

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QTextBrowser
 from PyQt5.QtWidgets import QMainWindow, QLabel, QComboBox
+from PyQt5 import  QtGui
 from PyQt5 import uic
 from main import *
 from sqllite3_atiri import *
@@ -18,6 +19,7 @@ class FirstWind(QMainWindow):
     def next(self):
         self.close()
         self.ch = Choosing()
+        self.ch.setFixedSize(913, 600)
         self.ch.show()
 
 
@@ -62,6 +64,7 @@ class Choosing(QMainWindow):
         print(themes)'''
         self.close()
         self.menu = Menu()
+        self.menu.setFixedSize(803, 460)
         self.menu.show()
 
 
@@ -74,6 +77,7 @@ class Greeting(QMainWindow):  # приветственное окно
     def updating(self):
         self.close()
         self.menu = Menu()
+        self.menu.setFixedSize(803, 460)
         self.menu.show()
 
 
@@ -88,7 +92,7 @@ class Menu(QMainWindow):
             c = line.split()
             if c[1] == 'True':
                 self.combo.addItem(c[0])
-        self.combo.move(370, 200)
+        self.combo.move(350, 200)
         self.pb.clicked.connect(self.page)
 
     def page(self):
@@ -96,6 +100,7 @@ class Menu(QMainWindow):
         a.append(p)
         self.close()
         self.page = Page()
+        self.page.setFixedSize(850, 650)
         self.page.show()
 
 
@@ -104,8 +109,9 @@ class Page(QMainWindow):
         super().__init__()
         uic.loadUi('page.ui', self)
         self.lab = QLabel(self)
-        self.lab.setText(fetch())
+        self.lab.setText(a[-1])
         self.lab.move(50, 50)
+        self.lab.setFont(QtGui.QFont("Times", 15, QtGui.QFont.Bold))
         self.linksbrowser = QTextBrowser(self)
         self.linksbrowser.move(50, 100)
         self.linksbrowser.setFixedSize(700, 450)
@@ -117,13 +123,18 @@ class Page(QMainWindow):
         records = cursor.fetchall()
         for row in records:
             link = '<a href="{}">{}</a>'.format(row[0], row[0])
-            self.linksbrowser.append('<span>{0}</span>'.format(link))
+            self.linksbrowser.append('<span color:white>{0}</span>'.format(link))
+            #self.linksbrowser.setStyleSheet('''QTextBrowser: { color: white; }''')
+            self.linksbrowser.setStyleSheet("color: white;")
         self.linksbrowser.setStyleSheet(" { height:15%; width:70%} ")
         self.pb.clicked.connect(self.back)
+        #self.linksbrowser.setStyleSheet('''QTextBrowser: { color: white; }''')
+        #self.linksbrowser.setStyleSheet("color: white;")
 
     def back(self):
         self.close()
         self.menu = Menu()
+        self.menu.setFixedSize(803, 460)
         self.menu.show()
 
 
@@ -133,10 +144,12 @@ def start():
     counter = f.read()
     if not counter:
         fw = FirstWind()
+        fw.setFixedSize(800, 603)
         fw.show()
         f.write('opened')
         sys.exit(app.exec_())
     else:
         ex = Greeting()
+        ex.setFixedSize(800, 600)
         ex.show()
         sys.exit(app.exec_())

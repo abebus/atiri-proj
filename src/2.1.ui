@@ -6,38 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>469</height>
+    <width>803</width>
+    <height>460</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>861</width>
-      <height>441</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>кот.jpg</pixmap>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pb">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>210</x>
       <y>300</y>
       <width>359</width>
-      <height>28</height>
+      <height>71</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-style: solid;
+border-width: 3px;
+border-radius: 4px;
+border-color: rgb(0, 255, 255);
+background-color: rgb(129, 129, 129);</string>
     </property>
     <property name="text">
      <string>show</string>
@@ -49,7 +43,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>803</width>
      <height>26</height>
     </rect>
    </property>
