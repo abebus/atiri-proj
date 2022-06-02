@@ -56,7 +56,7 @@ class Choosing(QMainWindow):
         f1.close()
         '''themes['IT'][1] = self.checkBox.isChecked()
         themes['python'][1] = self.checkBox2.isChecked()
-        themes['c++'][1] = self.checkBox3.isChecked()
+        themes['cpp'][1] = self.checkBox3.isChecked()
         themes['java'][1] = self.checkBox4.isChecked()
         themes['sport'][1] = self.checkBox5.isChecked()
         themes['health'][1] = self.checkBox6.isChecked()
@@ -99,15 +99,16 @@ class Menu(QMainWindow):
         p = self.combo.currentText()
         a.append(p)
         self.close()
-        self.page = Page()
+        self.page = Page(a[-1])
         self.page.setFixedSize(850, 650)
         self.page.show()
 
 
 class Page(QMainWindow):
-    def __init__(self):
+    def __init__(self, type):
         super().__init__()
         uic.loadUi('page.ui', self)
+        self.type = type
         self.lab = QLabel(self)
         self.lab.setText(a[-1])
         self.lab.move(50, 50)
@@ -116,11 +117,13 @@ class Page(QMainWindow):
         self.linksbrowser.move(50, 100)
         self.linksbrowser.setFixedSize(700, 450)
         self.linksbrowser.setOpenExternalLinks(True)
-        sqlite_connection = sqlite3.connect('sqlite_python.db')
-        cursor = sqlite_connection.cursor()
-        sqlite_select_query = """SELECT * from sql_atiri"""
-        cursor.execute(sqlite_select_query)
-        records = cursor.fetchall()
+        # sqlite_connection = sqlite3.connect('sqlite_database.db')
+        # cursor = sqlite_connection.cursor()
+        # sqlite_select_query = """SELECT python from sql_atiri"""
+       # cursor.execute(sqlite_select_query)
+        #records = cursor.fetchall()
+        records = fetch(self.type)
+
         for row in records:
             link = '<a href="{}">{}</a>'.format(row[0], row[0])
             self.linksbrowser.append('<span color:white>{0}</span>'.format(link))

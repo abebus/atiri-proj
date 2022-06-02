@@ -73,7 +73,7 @@ finally:
 
 def insert_multiple_records(records):
     try:
-        sqlite_connection = sqlite3.connect('sqlite_python.db')
+        sqlite_connection = sqlite3.connect('sqlite_database.db')
         cursor = sqlite_connection.cursor()
         print("Подключен к SQLite")
 
@@ -83,7 +83,7 @@ def insert_multiple_records(records):
 
         cursor.executemany(sqlite_insert_query, records)
         sqlite_connection.commit()
-        print("Записи успешно вставлены в таблицу sqlitedb_developers", cursor.rowcount)
+        print("Записи успешно вставлены в таблицу sqlite_database", cursor.rowcount)
         sqlite_connection.commit()
         cursor.close()
 
@@ -94,12 +94,11 @@ def insert_multiple_records(records):
             sqlite_connection.close()
             print("Соединение с SQLite закрыто")
 
-def fetch():
-    with sqlite3.connect('sqlite_python.db') as db:
+def fetch(type):
+    with sqlite3.connect('sqlite_database.db') as db:
         cursor=db.cursor()
-        cursor.execute('SELECT python FROM sql_atiri')
+        cursor.execute(f'SELECT {type} FROM sql_atiri')
         product=cursor.fetchall()
-        product=str(product)
     return product
 
 #records_to_insert = [('https://python.org',),
