@@ -71,14 +71,14 @@ finally:
 #        print("Соединение с SQLite закрыто")
 
 
-def insert_multiple_records(records):
+def insert_multiple_records(records, theme):
     try:
         sqlite_connection = sqlite3.connect('sqlite_database.db')
         cursor = sqlite_connection.cursor()
         print("Подключен к SQLite")
 
-        sqlite_insert_query = """INSERT INTO sql_atiri
-                                 (python)
+        sqlite_insert_query = f"""INSERT INTO sql_atiri
+                                 ({theme})
                                  VALUES (?);"""
 
         cursor.executemany(sqlite_insert_query, records)
@@ -94,10 +94,10 @@ def insert_multiple_records(records):
             sqlite_connection.close()
             print("Соединение с SQLite закрыто")
 
-def fetch(type):
+def fetch(theme):
     with sqlite3.connect('sqlite_database.db') as db:
         cursor=db.cursor()
-        cursor.execute(f'SELECT {type} FROM sql_atiri')
+        cursor.execute(f'SELECT ({theme}) FROM sql_atiri')
         product=cursor.fetchall()
     return product
 
